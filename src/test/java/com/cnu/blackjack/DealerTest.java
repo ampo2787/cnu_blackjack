@@ -15,4 +15,11 @@ public class DealerTest {
         assertThat(dealerScore, lessThan(24));
         assertThat(dealerScore, greaterThanOrEqualTo(17));
     }
+
+    @Test
+    public void 딜러는_16이하이면_HIT한다(){
+        Dealer dealer = new Dealer();
+        int dealerScore = dealer.getDealerScore();
+
+    }
 }
