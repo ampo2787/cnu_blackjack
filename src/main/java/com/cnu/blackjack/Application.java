@@ -3,6 +3,7 @@ package com.cnu.blackjack;
 import java.util.Scanner;
 
 public class Application {
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -27,6 +28,7 @@ public class Application {
             System.out.println("현재 플레이어 수 : " + i);
         }
         game.start();
+
     }
 
 }
