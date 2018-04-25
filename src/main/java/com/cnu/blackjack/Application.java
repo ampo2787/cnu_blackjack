@@ -7,7 +7,7 @@ public class Application {
         Game game = new Game(new Deck(1));
         game.addPlayer("player1", 10000);
         game.addPlayer("player2", 10000);
-        game.start();
+        game.start();   // 
     }
 
 }
