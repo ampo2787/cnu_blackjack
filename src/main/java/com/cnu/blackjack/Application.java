@@ -21,6 +21,7 @@ public class Application {
         for(int i=1;i<=PlayerNum;i++) {
             System.out.println("플레이어 이름을 입력하시오");
             PlayerName = scanner.nextLine();
+            scanner.nextLine(); //scanner 중복입력 방지
             System.out.println("플레이어의 자본금을 입력하시오");
             PlayerSeed = scanner.nextInt();
             game.addPlayer(PlayerName, PlayerSeed);
