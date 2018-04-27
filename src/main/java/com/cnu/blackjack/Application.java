@@ -32,8 +32,22 @@ public class Application {
             game.placeBet(PlayerName, scanner.nextInt());
 
         }
-        for(int i=1;i<=PlayerNum;i++){
+        System.out.println("게임을 시작합니다.");
 
+        for(String key : game.getPlayerList().keySet()){ //Map의 key - 여기서는 플레이어네임.
+            System.out.println(key + " 님의 차례입니다.");
+            System.out.print("현재 가지고있는 카드는 ");
+            for(int i=0;i<game.getPlayerList().get(key).getHand().getCardList().size(); i++){
+                System.out.print(game.getPlayerList().get(key).getHand().getCardList().get(i));
+            }
+            System.out.println("Hit 하시겠습니까? (Y/N)");
+            if(scanner.next() == "N"){
+                break;
+            }else if(scanner.next() == "Y"){
+                game.getPlayerList().get(key).hitCard();
+            }else{
+                System.out.println("잘못된 입력입니다.");
+            }
         }
         game.start();
 

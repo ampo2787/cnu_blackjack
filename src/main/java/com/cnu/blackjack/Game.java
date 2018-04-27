@@ -36,12 +36,11 @@ public class Game {
                 throw new NotEveyonePlacedBetException();
             }
             Dealer dealer = new Dealer();
-            player.hitCard();
 
-            int handValue = player.getHand().getCardList().size(); //플레이어 핸드 개수;
-            int cardRankValue = 0;//플레이어 카드
+            int handValue = player.getHand().getCardList().size(); //플레이어 핸드 개수.
+            int cardRankValue = 0;//플레이어 카드.
             for(int i=0;i<handValue;i++){
-                cardRankValue += player.getHand().getCardList().get(i).getRank();
+                cardRankValue += player.getHand().getCardList().get(i).getRank();//플레이어 카드 총합.
             }
             if(cardRankValue > 21) { //21 이상이면 무조건 진다. 딜러가 21이상이어도 마찬가지.
                 player.setCurrentBet(0);
