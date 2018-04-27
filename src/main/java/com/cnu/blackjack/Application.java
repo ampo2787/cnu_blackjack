@@ -27,6 +27,13 @@ public class Application {
             game.addPlayer(PlayerName, PlayerSeed);
             System.out.println("플레이어 수 : " + PlayerName);
             System.out.println("현재 플레이어 수 : " + i);
+
+            System.out.println("현재 자금은 " +game.getPlayerList().get(PlayerName) + " 입니다.\n얼마를 배팅하시겠습니까?");
+            game.placeBet(PlayerName, scanner.nextInt());
+
+        }
+        for(int i=1;i<=PlayerNum;i++){
+
         }
         game.start();
 
