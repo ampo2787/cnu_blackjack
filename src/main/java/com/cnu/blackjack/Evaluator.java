@@ -95,6 +95,12 @@ public class Evaluator {
         return totalValue;
     }
 
+    //과제 제출용 메소드
+    public void dealTwoCardsToPlayers(Deck deck) {
+        dealer.dealOneCardToEveryPlayer(deck, playerMap);
+        dealer.dealOneCardToEveryPlayer(deck, playerMap);
+    }
+
     private boolean playerIsBlackJack(Player player) {
         return player.isBlackJack();
     }

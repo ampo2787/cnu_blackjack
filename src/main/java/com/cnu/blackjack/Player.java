@@ -1,5 +1,6 @@
 package com.cnu.blackjack;
 
+import com.cnu.blackjack.exceptions.DrawWhenValueAbove17Exception;
 import com.cnu.blackjack.exceptions.DrawingAtBurstStateException;
 import com.cnu.blackjack.exceptions.NotEnoughBalanceException;
 import lombok.Data;
@@ -34,6 +35,13 @@ public class Player {
     public Card hitWithCertainCard(Deck deck, Suit suit, int rank) {
     // 테스트용 메소드. 덱에서 특정한 카드를 선택하여 뽑을 수 있다. 2018-04-28 추가.
         return hand.drawCertainCard(deck, suit, rank);
+    }
+
+    public Card TesthitWhenTotalAbove17(Deck deck) {
+        if (hand.getTotalValue() >= 17) {
+            throw new DrawWhenValueAbove17Exception();
+        }
+        return hand.drawCard(deck);
     }
 
     public boolean isBlackJack() {
