@@ -35,8 +35,6 @@ public class Game {
                 throw new NotEveyonePlacedBetException();
             }
         });
-
-
     }
 
     public void placeBet(String name, int bet) {
