@@ -20,4 +20,8 @@ public class Hand {
     public List<Card> getCardList() {
         return cardList;
     }
+
+    public void setCardList(Card card){
+        cardList.add(card);
+    }
 }
