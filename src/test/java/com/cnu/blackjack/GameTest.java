@@ -12,7 +12,7 @@ public class GameTest {
 
     @Test
     public void 게임은_플레이어를_추가할수_있어야한다() {
-        Game game = new Game(new Deck(2));
+        Game game = new Game();
         game.addPlayer("conch", 5000);
         game.addPlayer("ian", 10000);
 
@@ -22,14 +22,16 @@ public class GameTest {
 
     @Test(expected = Exception.class)
     public void 게임은_동일이름의_플레이어를_추가할수없다() {
-        Game game = new Game(new Deck(2));
+        Game game = new Game();
+        game.setDeck(new Deck(1));
         game.addPlayer("conch", 5000);
         game.addPlayer("conch", 5000);
     }
 
     @Test
     public void 게임은_플레이어생성후_배팅을_할수_있어야한다() {
-        Game game = new Game(new Deck(2));
+        Game game = new Game();
+        game.setDeck(new Deck(1));
         game.addPlayer("conch", 5000);
         game.placeBet("conch", 3000);
 
@@ -39,11 +41,12 @@ public class GameTest {
 
     @Test(expected = NotEveyonePlacedBetException.class)
     public void 게임은_모든플레이어가_베팅하지않으면_시작할수없다() {
-        Game game = new Game(new Deck(2));
+        Game game = new Game();
+        game.setDeck(new Deck(1));
         game.addPlayer("conch", 5000);
         game.addPlayer("ian", 5000);
         game.placeBet("conch", 3000);
-        game.start();
+        game.allPlayersBet();
     }
 
 }

@@ -9,11 +9,18 @@ public class Card {
     private final Suit suit;
 
     public Card(int rank, Suit suit) {
-        if (rank > 13) {
+        if (rank < 1 || rank > 13) {
             throw new NoSuchRankException();
         }
         this.rank = rank;
         this.suit = suit;
     }
+  
+    public int getRank() {
+        return this.rank;
+    }
 
+    public String toString() {
+        return suit.name() + " " + rank;
+    }
 }

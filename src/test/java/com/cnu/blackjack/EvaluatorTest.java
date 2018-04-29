@@ -1,9 +1,13 @@
 package com.cnu.blackjack;
 
+import com.cnu.blackjack.exceptions.DrawWhenValueAbove17Exception;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -11,21 +15,27 @@ public class EvaluatorTest {
 
     @Test
     public void 게임초기화시_모든플레이어는_2장의카드를_받는다() {
+        Map<String, Player> playerMap = new HashMap<>();
         Deck deck = new Deck(1);
-        Game game = new Game(deck);
+        Dealer dealer = new Dealer();
 
-        game.addPlayer("player1", 10000);
-        game.addPlayer("player2", 10000);
-        game.addPlayer("player3", 10000);
-        
-        Evaluator evaluator = new Evaluator(game.getPlayerList());
-        game.getPlayerList().forEach((name, player) -> {
-            assertThat(player.getHand().getCardList().size(), is(2));
-        });
+        Player[] players = new Player[2];
+        players[0] = new Player("Kim", 30000);
+        players[1] = new Player("Park", 30000);
+        playerMap.put(players[0].getPlayerName(), players[0]);
+        playerMap.put(players[1].getPlayerName(), players[1]);
+
+        Evaluator evaluator = new Evaluator(dealer, playerMap);
+        evaluator.dealTwoCardsToPlayers(deck);
+
+        for (int i = 0; i < 2; i++) {
+            assertTrue(players[i].getHand().getCardList().size() == 2);
+        }
     }
 
     @Test
     public void 각_플레이어는_16이하면_히트한다() {
+        Map<String, Player> playerMap = new HashMap<>();
         Deck deck = new Deck(1);
         Hand hand = new Hand(deck);
         hand.drawCard();
@@ -43,11 +53,9 @@ public class EvaluatorTest {
         } else {
             int thisSize = player1.getHand().getCardList().size();
             assertThat(cardListSize, is(thisSize));
-
         }
     }
 
-    @Test
     public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다() {
         Evaluator evaluator = new Evaluator();
         Deck deck = new Deck(1);
@@ -73,24 +81,63 @@ public class EvaluatorTest {
             //턴끝난거 테스트..?
         }
     }
-
-    @Test
+  
+    @Test(expected = DrawWhenValueAbove17Exception.class)
     public void 각_플레이어는_17이상이면_스테이한다() {
+        Map<String, Player> playerMap = new HashMap<>();
         Deck deck = new Deck(1);
-        Game game = new Game(deck);
-        game.addPlayer("player1",10000);
-        Evaluator evaluator = new Evaluator(game.getPlayerList());
-        evaluator.start();
+        Dealer dealer = new Dealer();
 
-        //각 플레이어들의 처음 받은 카드의 합들이 17 을 넘지 않으면 hit
-        //아니면 stay 인지 플레이어의 카드갯수를 보고 알 수 있다.
-        game.getPlayerList().forEach((name, player) -> {
-            if(evaluator.getPlayerScoreOfFirstReceived(player) < 17) {
-                assertThat(player.getHand().getCardList().size(), is(3));
-            }
-            else {
-                assertThat(player.getHand().getCardList().size(), is(2));
-            }
-        });
+        Player[] players = new Player[2];
+        players[0] = new Player("Kim", 30000);
+        players[1] = new Player("Park", 30000);
+        playerMap.put(players[0].getPlayerName(), players[0]);
+        playerMap.put(players[1].getPlayerName(), players[1]);
+
+        Evaluator evaluator = new Evaluator(dealer, playerMap);
+
+        players[0].hitWithCertainCard(deck, Suit.DIAMONDS, 10);
+        players[0].hitWithCertainCard(deck, Suit.DIAMONDS, 8);
+        players[1].hitWithCertainCard(deck, Suit.SPADES, 10);
+        players[1].hitWithCertainCard(deck, Suit.SPADES, 8);
+
+        players[0].TesthitWhenTotalAbove17(deck);
+        players[1].TesthitWhenTotalAbove17(deck);
+
     }
+
+    /*
+    @Test
+    public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다_2() {
+        Map<String, Player> playerMap = new HashMap<>();
+        Deck deck = new Deck(1);
+        Dealer dealer = new Dealer();
+
+        Player[] players = new Player[2];
+        players[0] = new Player("Kim", 30000);
+        players[1] = new Player("Park", 30000);
+        playerMap.put(players[0].getPlayerName(), players[0]);
+        playerMap.put(players[1].getPlayerName(), players[1]);
+
+        Evaluator evaluator = new Evaluator(dealer, playerMap);
+
+        players[0].hitWithCertainCard(deck, Suit.DIAMONDS, 10);
+        players[0].hitWithCertainCard(deck, Suit.DIAMONDS, 1);
+        players[1].hitWithCertainCard(deck, Suit.SPADES, 10);
+        players[1].hitWithCertainCard(deck, Suit.SPADES, 1);
+
+        assertTrue(players[0].getBalance() == 30000);
+        players[0].placeBet(10000);
+        assertTrue(players[0].getBalance() == 20000);
+        assertTrue(players[0].getCurrentBet() == 10000);
+
+
+        if (players[0].isBlackJack()) {
+            evaluator.getBetFromDealer(players[0], true);         // 게임에서 이겼을 때 보상받는 부분.
+        }
+
+        assertTrue(players[0].getBalance() == 50000);             // 기존 잔액 3만원에서 만원을 걸고 블랙잭으로 이겨 5만원이 됨
+        assertTrue(players[0].getCurrentBet() == 0);
+    }
+    */
 }

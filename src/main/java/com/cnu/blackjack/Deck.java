@@ -1,5 +1,6 @@
 package com.cnu.blackjack;
 
+import com.cnu.blackjack.exceptions.NoCertainCardAtDeck;
 import com.cnu.blackjack.exceptions.NoMoreCardException;
 
 import java.util.ArrayList;
@@ -38,5 +39,16 @@ public class Deck {
             throw new NoMoreCardException();
         }
         return cardList.remove(0);
+    }
+
+    public Card drawCertainCard(Suit suit, int rank) {
+    // 덱에서 특정한 숫자와 모양을 가진 카드를 뽑는 메소드. 테스트용 (2018-04-28 추가)
+        for (int i = 0; i < getTotalCard(); i++) {
+            Card card = cardList.get(i);
+            if (card.getSuit() == suit && card.getRank() == rank) {
+                return cardList.remove(i);
+            }
+        }
+        throw new NoCertainCardAtDeck();
     }
 }
