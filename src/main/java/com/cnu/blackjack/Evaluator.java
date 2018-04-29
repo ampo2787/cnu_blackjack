@@ -13,6 +13,10 @@ public class Evaluator {
         dealCardToPlayers();
     }
 
+    public Evaluator() {
+        
+    }
+
     public void start() {
         hitOrStay();
     }
@@ -48,5 +52,9 @@ public class Evaluator {
                 player.hitCard();
             }
         });
+    }
+  
+    public void rewardToPlayer(Player player,int balance) {
+        player.setBalance(player.getCurrentBet() * 2 + balance);
     }
 }
