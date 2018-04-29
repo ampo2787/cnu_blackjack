@@ -2,6 +2,9 @@ package com.cnu.blackjack;
 
 import org.junit.Test;
 
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -19,6 +22,7 @@ public class EvaluatorTest {
             System.out.println(key + "의 카드는 " + game.getPlayerList().get(key).getHand().getCardList());
         }
 
+
     }
 
     @Test
@@ -29,49 +33,45 @@ public class EvaluatorTest {
         hand.drawCard();
         Player player1 = new Player(30000, hand);
         int handValue = 0;
-        for(int i=0;i<player1.getHand().getCardList().size();i++) {
+        int cardListSize = player1.getHand().getCardList().size();
+        for (int i = 0; i < cardListSize; i++) {
             handValue += player1.getHand().getCardList().get(i).getRank();
         }
-
-            System.out.println("현재 값 : " + handValue);
-        if(handValue <= 16) {
+        if (handValue <= 16) {
             player1.hitCard();
-        }else{
-            assertFalse("카드 값이 16 이상입니다.", true);
-        }
-            handValue = 0;
-            for(int i=0;i<player1.getHand().getCardList().size();i++) {
-                handValue += player1.getHand().getCardList().get(i).getRank();
-            }
-            System.out.println("현재 값 : "  + handValue);
-        }
+            int afterHitListSize = player1.getHand().getCardList().size();
+            assertThat(++cardListSize, is(afterHitListSize));
+        } else {
+            int thisSize = player1.getHand().getCardList().size();
+            assertThat(cardListSize, is(thisSize));
 
+        }
 
 
     @Test
     public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다() {
+        Evaluator evaluator = new Evaluator();
         Deck deck = new Deck(1);
         Hand hand = new Hand(deck);
-        Card card = new Card(10,Suit.DIAMONDS);
-        Card card1 = new Card(8, Suit.DIAMONDS);
-        Card card2 = new Card(3, Suit.DIAMONDS);
-        hand.setCardList(card);
+        Card card1 = new Card(8, Suit.SPADES);
+        Card card2 = new Card(3, Suit.HEARTS);
+        Card card3 = new Card(10, Suit.DIAMONDS);
         hand.setCardList(card1);
         hand.setCardList(card2);
+        hand.setCardList(card3);
         Player player1 = new Player(30000, hand);
         player1.placeBet(20000);
         int handValue = 0;
-        for(int i=0;i<player1.getHand().getCardList().size();i++) {
+        for (int i = 0; i < player1.getHand().getCardList().size(); i++) {
             handValue += player1.getHand().getCardList().get(i).getRank();
         }
-        if(handValue == 21){
-            System.out.println("블랙잭 전 자금 : (현 자금) = " + player1.getBalance() + " (게임에 건 돈) = "  + player1.getCurrentBet());
-            player1.setBalance(player1.getCurrentBet() * 2 + player1.getBalance());//건돈 * 2 + 원래 돈
-            player1.setCurrentBet(0);
-            System.out.println("블랙잭 후 자금 : " + player1.getBalance());
-            //턴 끝난다????
-        }else{
-            System.out.println("블랙잭이 아님");
+        int thisBalance = player1.getBalance();
+        int thisBet = player1.getCurrentBet();
+        if (handValue == 21) {
+            evaluator.rewardToPlayer(player1,thisBalance);
+            int after_balance = player1.getBalance();
+            assertThat(thisBet*2+thisBalance, is(after_balance));
+            //턴끝난거 테스트..?
         }
     }
 

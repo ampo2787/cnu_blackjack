@@ -21,7 +21,7 @@ public class Hand {
         return cardList;
     }
 
-    public void setCardList(Card card){
+    public void setCardList(Card card) {
         cardList.add(card);
     }
 }
