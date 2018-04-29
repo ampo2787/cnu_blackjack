@@ -67,8 +67,6 @@ public class Game {
 
             }
         });
-
-
     }
 
     public void placeBet(String name, int bet) {

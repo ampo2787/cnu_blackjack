@@ -2,7 +2,6 @@ package com.cnu.blackjack;
 
 import org.junit.Test;
 
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static junit.framework.TestCase.assertFalse;
@@ -14,15 +13,14 @@ public class EvaluatorTest {
     public void 게임초기화시_모든플레이어는_2장의카드를_받는다() {
         Deck deck = new Deck(1);
         Game game = new Game(deck);
-        game.addPlayer("player1",30000);
+
+        game.addPlayer("player1",10000);
         game.addPlayer("player2",10000);
-        game.addPlayer("player3",90000);
+        game.addPlayer("player3",10000);
         Evaluator evaluator = new Evaluator(game.getPlayerList());
-        for(String key : game.getPlayerList().keySet()) {
-            System.out.println(key + "의 카드는 " + game.getPlayerList().get(key).getHand().getCardList());
-        }
-
-
+        game.getPlayerList().forEach((name, player) -> {
+            assertThat(player.getHand().getCardList().size(), is(2));
+        });
     }
 
     @Test
@@ -78,18 +76,20 @@ public class EvaluatorTest {
     @Test
     public void 각_플레이어는_17이상이면_스테이한다() {
         Deck deck = new Deck(1);
-        Hand hand = new Hand(deck);
-        Player player1 = new Player(30000, hand);
-        hand.drawCard();
-        hand.drawCard();
-        int handValue = 0;
-        for(int i=0;i<player1.getHand().getCardList().size();i++) {
-            handValue += player1.getHand().getCardList().get(i).getRank();
-        }
-        if(handValue >= 17){
-            assertTrue("값 : "+handValue, false);
-        }else{
-            assertFalse("값 : "+handValue, true);
-        }
+        Game game = new Game(deck);
+        game.addPlayer("player1",10000);
+        Evaluator evaluator = new Evaluator(game.getPlayerList());
+        evaluator.start();
+
+        //각 플레이어들의 처음 받은 카드의 합들이 17 을 넘지 않으면 hit
+        //아니면 stay 인지 플레이어의 카드갯수를 보고 알 수 있다.
+        game.getPlayerList().forEach((name, player) -> {
+            if(evaluator.getPlayerScoreOfFirstReceived(player) < 17) {
+                assertThat(player.getHand().getCardList().size(), is(3));
+            }
+            else {
+                assertThat(player.getHand().getCardList().size(), is(2));
+            }
+        });
     }
 }
