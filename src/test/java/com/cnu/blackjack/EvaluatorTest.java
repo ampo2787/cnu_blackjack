@@ -14,9 +14,10 @@ public class EvaluatorTest {
         Deck deck = new Deck(1);
         Game game = new Game(deck);
 
-        game.addPlayer("player1",10000);
-        game.addPlayer("player2",10000);
-        game.addPlayer("player3",10000);
+        game.addPlayer("player1", 10000);
+        game.addPlayer("player2", 10000);
+        game.addPlayer("player3", 10000);
+        
         Evaluator evaluator = new Evaluator(game.getPlayerList());
         game.getPlayerList().forEach((name, player) -> {
             assertThat(player.getHand().getCardList().size(), is(2));
@@ -44,7 +45,7 @@ public class EvaluatorTest {
             assertThat(cardListSize, is(thisSize));
 
         }
-
+    }
 
     @Test
     public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다() {
