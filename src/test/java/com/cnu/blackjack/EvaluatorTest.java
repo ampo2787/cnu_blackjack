@@ -2,13 +2,25 @@ package com.cnu.blackjack;
 
 import org.junit.Test;
 
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 public class EvaluatorTest {
 
     @Test
     public void 게임초기화시_모든플레이어는_2장의카드를_받는다() {
+        Deck deck = new Deck(1);
+        Game game = new Game(deck);
+        game.addPlayer("player1",30000);
+        game.addPlayer("player2",10000);
+        game.addPlayer("player3",90000);
+        Evaluator evaluator = new Evaluator(game.getPlayerList());
+        for(String key : game.getPlayerList().keySet()) {
+            System.out.println(key + "의 카드는 " + game.getPlayerList().get(key).getHand().getCardList());
+        }
 
 
     }
@@ -35,7 +47,6 @@ public class EvaluatorTest {
 
         }
 
-    }
 
     @Test
     public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다() {
@@ -66,6 +77,19 @@ public class EvaluatorTest {
 
     @Test
     public void 각_플레이어는_17이상이면_스테이한다() {
-
+        Deck deck = new Deck(1);
+        Hand hand = new Hand(deck);
+        Player player1 = new Player(30000, hand);
+        hand.drawCard();
+        hand.drawCard();
+        int handValue = 0;
+        for(int i=0;i<player1.getHand().getCardList().size();i++) {
+            handValue += player1.getHand().getCardList().get(i).getRank();
+        }
+        if(handValue >= 17){
+            assertTrue("값 : "+handValue, false);
+        }else{
+            assertFalse("값 : "+handValue, true);
+        }
     }
 }
