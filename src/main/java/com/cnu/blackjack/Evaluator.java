@@ -17,7 +17,8 @@ public class Evaluator {
     public Evaluator() {}
 
     public void start() {
-        hitOrStay();
+        Deck deck = new Deck(1);
+        hitOrStay(deck);
     }
 
     public void evaluateAllPlayer() {
@@ -82,11 +83,11 @@ public class Evaluator {
         return handValue;
     }
 
-    private void hitOrStay() {
+    private void hitOrStay(Deck deck) {
         //플레이어가 들고 있는 카드의 합이 17이 넘지 않으면 hit, 아니면 stay
         playerMap.forEach((name, player)-> {
             if(getPlayerScoreOfFirstReceived(player) < 17) {
-                player.hitCard();
+                player.hitCard(deck);
             }
         });
     }

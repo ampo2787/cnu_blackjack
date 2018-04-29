@@ -20,8 +20,8 @@ public class EvaluatorTest {
         Dealer dealer = new Dealer();
 
         Player[] players = new Player[2];
-        players[0] = new Player("Kim", 30000);
-        players[1] = new Player("Park", 30000);
+        players[0] = new Player("Ahn", 30000);
+        players[1] = new Player("Shim", 30000);
         playerMap.put(players[0].getPlayerName(), players[0]);
         playerMap.put(players[1].getPlayerName(), players[1]);
 
@@ -37,17 +37,17 @@ public class EvaluatorTest {
     public void 각_플레이어는_16이하면_히트한다() {
         Map<String, Player> playerMap = new HashMap<>();
         Deck deck = new Deck(1);
-        Hand hand = new Hand(deck);
-        hand.drawCard();
-        hand.drawCard();
-        Player player1 = new Player(30000, hand);
+        Hand hand = new Hand();
+        hand.drawCard(deck);
+        hand.drawCard(deck);
+        Player player1 = new Player("Shim",30000);
         int handValue = 0;
         int cardListSize = player1.getHand().getCardList().size();
         for (int i = 0; i < cardListSize; i++) {
             handValue += player1.getHand().getCardList().get(i).getRank();
         }
         if (handValue <= 16) {
-            player1.hitCard();
+            player1.hitCard(deck);
             int afterHitListSize = player1.getHand().getCardList().size();
             assertThat(++cardListSize, is(afterHitListSize));
         } else {
@@ -56,17 +56,18 @@ public class EvaluatorTest {
         }
     }
 
+    @Test
     public void 블랙잭이나오면_2배로_보상받고_해당_플레이어의_턴은_끝난다() {
         Evaluator evaluator = new Evaluator();
         Deck deck = new Deck(1);
-        Hand hand = new Hand(deck);
+        Hand hand = new Hand();
         Card card1 = new Card(8, Suit.SPADES);
         Card card2 = new Card(3, Suit.HEARTS);
         Card card3 = new Card(10, Suit.DIAMONDS);
         hand.setCardList(card1);
         hand.setCardList(card2);
         hand.setCardList(card3);
-        Player player1 = new Player(30000, hand);
+        Player player1 = new Player("Shim",30000);
         player1.placeBet(20000);
         int handValue = 0;
         for (int i = 0; i < player1.getHand().getCardList().size(); i++) {
