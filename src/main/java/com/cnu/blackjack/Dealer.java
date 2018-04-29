@@ -11,6 +11,15 @@ public class Dealer {
         this.hand = new Hand();
     }
 
+    /*
+    public int getDealerScore() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int score = random.nextInt(17, 24);
+        System.out.println(score);
+        return score;
+    }
+    */
+  
     public int getDealerScore() {
         return hand.getTotalValue();
     }
@@ -28,4 +37,5 @@ public class Dealer {
             player.getHand().drawCard(deck);
         }
     }
+  
 }

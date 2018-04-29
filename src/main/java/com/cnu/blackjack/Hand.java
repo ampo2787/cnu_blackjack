@@ -71,4 +71,8 @@ public class Hand {
         sb.append("Total value : " + getTotalValue());
         System.out.println(sb);
     }
+  
+    public void setCardList(Card card) {
+        cardList.add(card);
+    }
 }

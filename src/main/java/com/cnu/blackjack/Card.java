@@ -15,7 +15,7 @@ public class Card {
         this.rank = rank;
         this.suit = suit;
     }
-
+  
     public int getRank() {
         return this.rank;
     }
@@ -23,5 +23,4 @@ public class Card {
     public String toString() {
         return suit.name() + " " + rank;
     }
-
 }
